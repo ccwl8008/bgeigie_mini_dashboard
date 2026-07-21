@@ -1,3 +1,5 @@
+import hashlib
+
 from itsdangerous import URLSafeTimedSerializer, BadSignature, SignatureExpired
 from passlib.context import CryptContext
 from fastapi import Request, HTTPException, status
@@ -8,12 +10,20 @@ pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 _serializer = URLSafeTimedSerializer(settings.SECRET_KEY, salt="bgeigie-session")
 
 
+def _prehash(plain_password: str) -> str:
+    """bcrypt solo admite hasta 72 bytes y las versiones recientes de la
+    librería lanzan error en vez de truncar. Pre-hasheamos con SHA-256
+    (siempre 64 caracteres hex, muy por debajo del límite) para que
+    cualquier contraseña -larga, con emojis, lo que sea- funcione siempre."""
+    return hashlib.sha256(plain_password.encode("utf-8")).hexdigest()
+
+
 def hash_password(plain_password: str) -> str:
-    return pwd_context.hash(plain_password)
+    return pwd_context.hash(_prehash(plain_password))
 
 
 def verify_password(plain_password: str, password_hash: str) -> bool:
-    return pwd_context.verify(plain_password, password_hash)
+    return pwd_context.verify(_prehash(plain_password), password_hash)
 
 
 def create_session_token(username: str) -> str:
