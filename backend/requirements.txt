@@ -1,3 +1,9 @@
+passlib==1.7.4
+# bcrypt>=4.1 rompe la auto-verificacion interna de passlib (detect_wrap_bug):
+# esa rutina prueba con un secreto largo a proposito y bcrypt>=4.1 lanza
+# ValueError en vez de truncar como antes. Se fija en 4.0.1 hasta que
+# passlib publique un fix (o se cambie de libreria de hashing).
+bcrypt==4.0.1
 fastapi==0.115.0
 uvicorn[standard]==0.30.6
 sqlalchemy==2.0.35
@@ -5,5 +11,4 @@ pymysql==1.1.1
 cryptography==43.0.1
 jinja2==3.1.4
 python-multipart==0.0.12
-passlib[bcrypt]==1.7.4
 itsdangerous==2.2.0
