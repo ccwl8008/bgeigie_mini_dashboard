@@ -28,8 +28,9 @@ services:
       test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
       interval: 10s
       timeout: 5s
-      retries: 10
-
+      retries: 15
+      start_period: 60s
+      
   backend:
     build:
       context: ./backend
