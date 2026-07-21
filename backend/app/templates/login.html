@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block title %}Ingreso · bGeigie Monitor{% endblock %}
+{% block content %}
+<div class="login-screen">
+    <div class="login-panel">
+        <div class="login-panel__corner login-panel__corner--tl"></div>
+        <div class="login-panel__corner login-panel__corner--tr"></div>
+        <div class="login-panel__corner login-panel__corner--bl"></div>
+        <div class="login-panel__corner login-panel__corner--br"></div>
+
+        <div class="login-panel__eyebrow">ESTACIÓN DE MONITOREO</div>
+        <h1 class="login-panel__title">bGeigie<span class="dot">.</span>monitor</h1>
+        <p class="login-panel__subtitle">Ingresa tus credenciales para ver las lecturas de radiación.</p>
+
+        {% if error %}
+        <div class="login-panel__error">{{ error }}</div>
+        {% endif %}
+
+        <form method="post" action="/login" class="login-form">
+            <label class="field">
+                <span class="field__label">Usuario</span>
+                <input type="text" name="username" autocomplete="username" required autofocus>
+            </label>
+            <label class="field">
+                <span class="field__label">Contraseña</span>
+                <input type="password" name="password" autocomplete="current-password" required>
+            </label>
+            <button type="submit" class="btn-primary">Entrar</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

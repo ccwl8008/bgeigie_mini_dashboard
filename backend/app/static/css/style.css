@@ -1,0 +1,261 @@
+/* =========================================================================
+   bGeigie Monitor — identidad visual
+   Panel de instrumento de una estación de monitoreo nocturna: fondo azul
+   carbón profundo, acento ámbar (como el dial de un dosímetro/nixie), y
+   una tipografía monoespaciada para todo lo que es dato/lectura.
+   ========================================================================= */
+
+:root {
+    --bg: #10141B;
+    --panel: #171D26;
+    --panel-raised: #1D2530;
+    --line: #2A323D;
+    --text: #E8ECF1;
+    --text-muted: #7C8798;
+    --amber: #FFB238;
+    --amber-dim: #7A5A20;
+    --cyan: #4FD1C5;
+    --danger: #FF5C5C;
+
+    --font-display: 'JetBrains Mono', monospace;
+    --font-body: 'Inter', sans-serif;
+}
+
+* { box-sizing: border-box; }
+
+body {
+    margin: 0;
+    background-color: var(--bg);
+    background-image:
+        linear-gradient(var(--line) 1px, transparent 1px),
+        linear-gradient(90deg, var(--line) 1px, transparent 1px);
+    background-size: 32px 32px;
+    background-attachment: fixed;
+    color: var(--text);
+    font-family: var(--font-body);
+}
+
+.dot { color: var(--amber); }
+
+/* ---------- Login ---------- */
+.login-screen {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+}
+
+.login-panel {
+    position: relative;
+    width: 100%;
+    max-width: 380px;
+    background: var(--panel);
+    border: 1px solid var(--line);
+    padding: 40px 32px;
+}
+
+.login-panel__corner {
+    position: absolute;
+    width: 14px;
+    height: 14px;
+    border: 2px solid var(--amber);
+}
+.login-panel__corner--tl { top: -1px; left: -1px; border-right: none; border-bottom: none; }
+.login-panel__corner--tr { top: -1px; right: -1px; border-left: none; border-bottom: none; }
+.login-panel__corner--bl { bottom: -1px; left: -1px; border-right: none; border-top: none; }
+.login-panel__corner--br { bottom: -1px; right: -1px; border-left: none; border-top: none; }
+
+.login-panel__eyebrow {
+    font-family: var(--font-display);
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    color: var(--text-muted);
+    margin-bottom: 8px;
+}
+.login-panel__title {
+    font-family: var(--font-display);
+    font-size: 28px;
+    margin: 0 0 8px;
+}
+.login-panel__subtitle {
+    color: var(--text-muted);
+    font-size: 14px;
+    margin: 0 0 28px;
+}
+.login-panel__error {
+    background: rgba(255, 92, 92, 0.12);
+    border: 1px solid var(--danger);
+    color: var(--danger);
+    font-size: 13px;
+    padding: 10px 12px;
+    margin-bottom: 20px;
+}
+
+.login-form { display: flex; flex-direction: column; gap: 18px; }
+.field { display: flex; flex-direction: column; gap: 6px; }
+.field__label { font-size: 12px; color: var(--text-muted); letter-spacing: 0.04em; }
+.field input {
+    background: var(--bg);
+    border: 1px solid var(--line);
+    color: var(--text);
+    padding: 10px 12px;
+    font-family: var(--font-body);
+    font-size: 14px;
+}
+.field input:focus {
+    outline: 2px solid var(--amber);
+    outline-offset: 1px;
+}
+
+.btn-primary {
+    background: var(--amber);
+    color: #171106;
+    border: none;
+    padding: 12px;
+    font-family: var(--font-display);
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    cursor: pointer;
+    margin-top: 8px;
+}
+.btn-primary:hover { filter: brightness(1.08); }
+.btn-primary:focus-visible { outline: 2px solid var(--cyan); outline-offset: 2px; }
+
+.btn-ghost {
+    color: var(--text-muted);
+    text-decoration: none;
+    border: 1px solid var(--line);
+    padding: 6px 14px;
+    font-size: 13px;
+}
+.btn-ghost:hover { color: var(--text); border-color: var(--amber); }
+
+/* ---------- App shell ---------- */
+.app { max-width: 1280px; margin: 0 auto; padding: 24px; }
+
+.topbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    border-bottom: 1px solid var(--line);
+    padding-bottom: 16px;
+    margin-bottom: 20px;
+}
+.topbar__eyebrow {
+    font-family: var(--font-display);
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    color: var(--text-muted);
+    display: block;
+    margin-bottom: 4px;
+}
+.topbar__title { font-family: var(--font-display); font-size: 22px; margin: 0; }
+.topbar__right { display: flex; align-items: center; gap: 14px; }
+.topbar__user { font-family: var(--font-display); font-size: 13px; color: var(--text-muted); }
+
+.panel__label {
+    font-family: var(--font-display);
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    color: var(--text-muted);
+    margin-bottom: 14px;
+}
+.panel__foot {
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-top: 14px;
+    text-align: center;
+}
+
+.panel {
+    background: var(--panel);
+    border: 1px solid var(--line);
+    padding: 20px;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: 320px 1fr;
+    grid-template-rows: auto auto auto;
+    gap: 16px;
+}
+.panel--gauge { grid-column: 1; grid-row: 1; display: flex; flex-direction: column; align-items: center; }
+.panel--stats { grid-column: 1; grid-row: 2; }
+.panel--chart { grid-column: 2; grid-row: 1; min-height: 260px; }
+.panel--map { grid-column: 2; grid-row: 2; }
+.panel--table { grid-column: 1 / -1; grid-row: 3; }
+
+@media (max-width: 860px) {
+    .grid { grid-template-columns: 1fr; }
+    .panel--gauge, .panel--stats, .panel--chart, .panel--map, .panel--table {
+        grid-column: 1; grid-row: auto;
+    }
+}
+
+/* ---------- Gauge (elemento distintivo) ---------- */
+.gauge { position: relative; width: 220px; }
+.gauge__svg { width: 100%; }
+.gauge__track { fill: none; stroke: var(--line); stroke-width: 10; stroke-linecap: round; }
+.gauge__fill {
+    fill: none;
+    stroke: var(--amber);
+    stroke-width: 10;
+    stroke-linecap: round;
+    stroke-dasharray: 251;
+    stroke-dashoffset: 251;
+    filter: drop-shadow(0 0 6px rgba(255, 178, 56, 0.6));
+    transition: stroke-dashoffset 0.6s ease, stroke 0.3s ease;
+}
+.gauge__fill.is-pulsing { animation: geiger-pulse 0.4s ease-out; }
+.gauge__ticks line { stroke: var(--line); stroke-width: 2; }
+@keyframes geiger-pulse {
+    0% { filter: drop-shadow(0 0 14px rgba(255, 178, 56, 1)); }
+    100% { filter: drop-shadow(0 0 6px rgba(255, 178, 56, 0.6)); }
+}
+.gauge__readout {
+    position: absolute;
+    left: 50%;
+    bottom: 6px;
+    transform: translateX(-50%);
+    text-align: center;
+}
+.gauge__value { font-family: var(--font-display); font-size: 40px; font-weight: 700; }
+.gauge__unit { display: block; font-size: 11px; color: var(--text-muted); letter-spacing: 0.1em; }
+.gauge__secondary {
+    font-family: var(--font-display);
+    color: var(--cyan);
+    font-size: 14px;
+    margin-top: 6px;
+}
+
+.stat-list { margin: 0; }
+.stat-list__row {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 0;
+    border-bottom: 1px dashed var(--line);
+    font-family: var(--font-display);
+    font-size: 13px;
+}
+.stat-list__row dt { color: var(--text-muted); }
+.stat-list__row dd { margin: 0; }
+
+.sensor-picker { margin-top: 18px; display: flex; flex-direction: column; gap: 6px; }
+.sensor-picker label { font-size: 12px; color: var(--text-muted); }
+.sensor-picker select {
+    background: var(--bg);
+    color: var(--text);
+    border: 1px solid var(--line);
+    padding: 8px;
+    font-family: var(--font-body);
+}
+
+#cpmChart { max-height: 220px; }
+
+#map { height: 260px; border: 1px solid var(--line); }
+
+.table-wrap { overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; font-family: var(--font-display); font-size: 13px; }
+th, td { text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--line); white-space: nowrap; }
+th { color: var(--text-muted); font-weight: 500; letter-spacing: 0.04em; font-size: 11px; }
