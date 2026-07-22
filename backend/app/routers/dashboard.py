@@ -1,6 +1,5 @@
 from fastapi import APIRouter, Depends, Request, Query
 from fastapi.responses import HTMLResponse
-from fastapi.templating import Jinja2Templates
 from sqlalchemy.orm import Session
 from sqlalchemy import desc
 
@@ -8,9 +7,9 @@ from app.database import get_db
 from app.models import DataRadiacion
 from app.security import get_current_username
 from app.nmea import parse_latitude, parse_longitude
+from app.templates_config import templates
 
 router = APIRouter()
-templates = Jinja2Templates(directory="app/templates")
 
 
 @router.get("/", response_class=HTMLResponse)

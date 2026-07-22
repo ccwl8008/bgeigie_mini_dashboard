@@ -9,7 +9,7 @@
         </div>
         <div class="topbar__right">
             <span class="topbar__user">{{ username }}</span>
-            <a href="/logout" class="btn-ghost">Salir</a>
+            <a href="{{ base_path }}/logout" class="btn-ghost">Salir</a>
         </div>
     </header>
 
@@ -94,8 +94,9 @@
     </main>
 </div>
 
+<script>window.BASE_PATH = "{{ base_path }}";</script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.4/chart.umd.min.js"></script>
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-<script src="/static/js/dashboard.js"></script>
+<script src="{{ base_path }}/static/js/dashboard.js"></script>
 {% endblock %}

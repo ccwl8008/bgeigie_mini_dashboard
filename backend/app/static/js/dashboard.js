@@ -1,6 +1,11 @@
 const GAUGE_MAX_CPM = 1000; // ajusta según el rango normal de tu sensor
 const GAUGE_ARC_LENGTH = 251;
 const POLL_MS = 10000;
+const BASE_PATH = window.BASE_PATH || "";
+
+function apiUrl(path) {
+    return `${BASE_PATH}${path}`;
+}
 
 let chart;
 let map;
@@ -34,7 +39,7 @@ function pulseGauge() {
 }
 
 async function loadStats() {
-    const res = await fetch("/api/stats");
+    const res = await fetch(apiUrl("/api/stats"));
     if (!res.ok) return;
     const data = await res.json();
 
@@ -145,7 +150,7 @@ function buildTable(readings) {
 }
 
 async function loadSensores() {
-    const res = await fetch("/api/sensores");
+    const res = await fetch(apiUrl("/api/sensores"));
     if (!res.ok) return;
     const sensores = await res.json();
     const select = document.getElementById("sensorSelect");
@@ -162,8 +167,8 @@ async function loadSensores() {
 
 async function loadReadings() {
     const url = currentSensor
-        ? `/api/readings?limit=100&sensorID=${encodeURIComponent(currentSensor)}`
-        : "/api/readings?limit=100";
+        ? apiUrl(`/api/readings?limit=100&sensorID=${encodeURIComponent(currentSensor)}`)
+        : apiUrl("/api/readings?limit=100");
     const res = await fetch(url);
     if (!res.ok) return;
     const readings = await res.json();

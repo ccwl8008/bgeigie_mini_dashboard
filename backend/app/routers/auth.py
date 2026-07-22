@@ -1,15 +1,15 @@
 from fastapi import APIRouter, Depends, Request, Form
 from fastapi.responses import HTMLResponse, RedirectResponse
-from fastapi.templating import Jinja2Templates
 from sqlalchemy.orm import Session
 
 from app.database import get_db
 from app.models import Usuario
 from app.security import verify_password, create_session_token
 from app.config import settings
+from app.templates_config import templates
 
 router = APIRouter()
-templates = Jinja2Templates(directory="app/templates")
+BP = settings.BASE_PATH  # atajo
 
 
 @router.get("/login", response_class=HTMLResponse)
@@ -30,23 +30,24 @@ async def login_submit(
 
     if not usuario or not verify_password(password, usuario.password_hash):
         return RedirectResponse(
-            url="/login?error=Usuario o contraseña incorrectos", status_code=303
+            url=f"{BP}/login?error=Usuario o contraseña incorrectos", status_code=303
         )
 
     token = create_session_token(usuario.username)
-    response = RedirectResponse(url="/", status_code=303)
+    response = RedirectResponse(url=f"{BP}/", status_code=303)
     response.set_cookie(
         key=settings.SESSION_COOKIE_NAME,
         value=token,
         max_age=settings.SESSION_MAX_AGE_SECONDS,
         httponly=True,
         samesite="lax",
+        path=BP or "/",
     )
     return response
 
 
 @router.get("/logout")
 async def logout():
-    response = RedirectResponse(url="/login", status_code=303)
-    response.delete_cookie(settings.SESSION_COOKIE_NAME)
+    response = RedirectResponse(url=f"{BP}/login", status_code=303)
+    response.delete_cookie(settings.SESSION_COOKIE_NAME, path=BP or "/")
     return response

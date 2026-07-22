@@ -17,6 +17,10 @@ class Settings:
     SESSION_COOKIE_NAME: str = "bgeigie_session"
     SESSION_MAX_AGE_SECONDS: int = 60 * 60 * 12  # 12 horas
 
+    # Para desplegar bajo un subdirectorio, ej. https://cybersoft.com/BGeigie
+    # (sin "/" al final; vacío "" si vive en la raíz del dominio)
+    BASE_PATH: str = os.getenv("BASE_PATH", "").rstrip("/")
+
     @property
     def sqlalchemy_url(self) -> str:
         return (

@@ -46,6 +46,6 @@ def get_current_username(request: Request) -> str:
     if not username:
         raise HTTPException(
             status_code=status.HTTP_303_SEE_OTHER,
-            headers={"Location": "/login"},
+            headers={"Location": f"{settings.BASE_PATH}/login"},
         )
     return username
