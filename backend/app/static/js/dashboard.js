@@ -173,9 +173,12 @@ async function loadReadings() {
     if (!res.ok) return;
     const readings = await res.json();
 
-    buildChart(readings);
-    buildMap(readings);
-    buildTable(readings);
+    // Cada uno en su propio try/catch: si una libreria externa falla
+    // en cargar (bloqueador de anuncios, red intermitente, etc.), las
+    // otras dos secciones igual se muestran en vez de quedar en blanco.
+    try { buildChart(readings); } catch (e) { console.error("Error en la grafica:", e); }
+    try { buildMap(readings); } catch (e) { console.error("Error en el mapa:", e); }
+    try { buildTable(readings); } catch (e) { console.error("Error en la tabla:", e); }
 
     if (readings.length > 0) {
         const latest = readings[readings.length - 1];
