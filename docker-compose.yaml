@@ -49,7 +49,7 @@ services:
       ADMIN_PASSWORD: ${ADMIN_PASSWORD}
       ADMIN_NOMBRE: ${ADMIN_NOMBRE:-Administrador}
       # Deja vacío si la app vive en la raíz del dominio. Para un
-      # subdirectorio (ej. https://cybersoft.com/BGeigie) pon /BGeigie
+      # subdirectorio (ej. https://cybersof.com/bGeigie) pon /bGeigie
       # (sin "/" al final) y ajusta las labels de Traefik de abajo igual.
       BASE_PATH: ${BASE_PATH:-}
     # Coolify inyecta Traefik automáticamente si expones el puerto así:
@@ -58,14 +58,14 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.http.services.bgeigie.loadbalancer.server.port=8000"
-      # --- Enrutamiento por subdirectorio (ej. /BGeigie) ---
+      # --- Enrutamiento por subdirectorio (ej. /bGeigie) ---
       # Ajusta el dominio y el prefijo a tu caso. Si NO usas subdirectorio
       # (dominio propio tipo bgeigie.cybersoft.com), borra este bloque y
       # deja que Coolify maneje el dominio desde su propio campo "Domains".
-      - "traefik.http.routers.bgeigie.rule=Host(`cybersoft.com`) && PathPrefix(`/BGeigie`)"
+      - "traefik.http.routers.bgeigie.rule=Host(`cybersof.com`) && PathPrefix(`/bGeigie`)"
       - "traefik.http.routers.bgeigie.entrypoints=https"
       - "traefik.http.routers.bgeigie.tls=true"
-      - "traefik.http.middlewares.bgeigie-stripprefix.stripprefix.prefixes=/BGeigie"
+      - "traefik.http.middlewares.bgeigie-stripprefix.stripprefix.prefixes=/bGeigie"
       - "traefik.http.routers.bgeigie.middlewares=bgeigie-stripprefix"
 
 volumes:
