@@ -2,9 +2,10 @@ import hashlib
 
 from itsdangerous import URLSafeTimedSerializer, BadSignature, SignatureExpired
 from passlib.context import CryptContext
-from fastapi import Request, HTTPException, status
+from fastapi import Request, HTTPException, status, Depends
 
 from app.config import settings
+from app.database import get_db
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 _serializer = URLSafeTimedSerializer(settings.SECRET_KEY, salt="bgeigie-session")
@@ -49,3 +50,19 @@ def get_current_username(request: Request) -> str:
             headers={"Location": f"{settings.BASE_PATH}/login"},
         )
     return username
+
+
+def require_admin(request: Request, db=Depends(get_db)):
+    """Dependency: igual que get_current_username, pero ademas exige que
+    el usuario tenga es_admin=1. Devuelve el objeto Usuario completo."""
+    from app.models import Usuario  # import tardio para evitar ciclos
+
+    username = get_current_username(request)
+    usuario = db.query(Usuario).filter(Usuario.username == username).first()
+
+    if not usuario or not usuario.es_admin:
+        raise HTTPException(
+            status_code=status.HTTP_303_SEE_OTHER,
+            headers={"Location": f"{settings.BASE_PATH}/"},
+        )
+    return usuario

@@ -1,0 +1,98 @@
+{% extends "base.html" %}
+{% block title %}Administración · bGeigie Monitor{% endblock %}
+{% block content %}
+<div class="app">
+    <header class="topbar">
+        <div class="topbar__brand">
+            <span class="topbar__eyebrow">ESTACIÓN DE MONITOREO</span>
+            <h1 class="topbar__title">bGeigie<span class="dot">.</span>monitor</h1>
+        </div>
+        <div class="topbar__right">
+            <a href="{{ base_path }}/" class="btn-ghost">Volver al panel</a>
+            <a href="{{ base_path }}/logout" class="btn-ghost">Salir</a>
+        </div>
+    </header>
+
+    <main class="admin-grid">
+        <section class="panel">
+            <div class="panel__label">USUARIOS CON ACCESO</div>
+            <table class="admin-table">
+                <thead>
+                    <tr><th>Usuario</th><th>Nombre</th><th>Admin</th><th>Estado</th><th></th></tr>
+                </thead>
+                <tbody>
+                    {% for u in usuarios %}
+                    <tr>
+                        <td>{{ u.username }}</td>
+                        <td>{{ u.nombre_completo or "-" }}</td>
+                        <td>{{ "Sí" if u.es_admin else "No" }}</td>
+                        <td>{{ "Activo" if u.activo else "Inactivo" }}</td>
+                        <td class="admin-table__actions">
+                            {% if u.id != admin.id %}
+                            <form method="post" action="{{ base_path }}/admin/usuarios/{{ u.id }}/toggle">
+                                <button type="submit" class="btn-ghost btn-small">
+                                    {{ "Desactivar" if u.activo else "Activar" }}
+                                </button>
+                            </form>
+                            <form method="post" action="{{ base_path }}/admin/usuarios/{{ u.id }}/eliminar"
+                                  onsubmit="return confirm('¿Eliminar a {{ u.username }}? Esto no se puede deshacer.');">
+                                <button type="submit" class="btn-ghost btn-small btn-danger">Eliminar</button>
+                            </form>
+                            {% else %}
+                            <span class="text-muted">(tu cuenta)</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+            <h3 class="admin-subtitle">Agregar nuevo usuario</h3>
+            <form method="post" action="{{ base_path }}/admin/usuarios" class="admin-form">
+                <label class="field">
+                    <span class="field__label">Usuario</span>
+                    <input type="text" name="username" required>
+                </label>
+                <label class="field">
+                    <span class="field__label">Contraseña</span>
+                    <input type="password" name="password" required>
+                </label>
+                <label class="field">
+                    <span class="field__label">Nombre completo</span>
+                    <input type="text" name="nombre_completo">
+                </label>
+                <label class="field field--checkbox">
+                    <input type="checkbox" name="es_admin">
+                    <span>Dar permisos de administrador</span>
+                </label>
+                <button type="submit" class="btn-primary">Crear usuario</button>
+            </form>
+        </section>
+
+        <section class="panel">
+            <div class="panel__label">DESCARGAR HISTÓRICO (CSV)</div>
+            <form method="get" action="{{ base_path }}/api/exportar" class="admin-form">
+                <label class="field">
+                    <span class="field__label">Sensor</span>
+                    <select name="sensorID">
+                        <option value="">Todos</option>
+                        {% for s in sensores %}
+                        <option value="{{ s }}">{{ s }}</option>
+                        {% endfor %}
+                    </select>
+                </label>
+                <label class="field">
+                    <span class="field__label">Desde</span>
+                    <input type="date" name="desde">
+                </label>
+                <label class="field">
+                    <span class="field__label">Hasta</span>
+                    <input type="date" name="hasta">
+                </label>
+                <button type="submit" class="btn-primary">Descargar CSV</button>
+            </form>
+            <p class="panel__foot">El archivo se descarga directo, sin pasar por esta página. Tope de 50,000 filas por descarga.</p>
+        </section>
+    </main>
+</div>
+{% endblock %}

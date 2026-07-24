@@ -4,7 +4,7 @@ from sqlalchemy.orm import Session
 from sqlalchemy import desc
 
 from app.database import get_db
-from app.models import DataRadiacion
+from app.models import DataRadiacion, Usuario
 from app.security import get_current_username
 from app.nmea import parse_latitude, parse_longitude
 from app.templates_config import templates
@@ -13,9 +13,15 @@ router = APIRouter()
 
 
 @router.get("/", response_class=HTMLResponse)
-async def dashboard_page(request: Request, username: str = Depends(get_current_username)):
+async def dashboard_page(
+    request: Request,
+    username: str = Depends(get_current_username),
+    db: Session = Depends(get_db),
+):
+    usuario = db.query(Usuario).filter(Usuario.username == username).first()
+    es_admin = bool(usuario and usuario.es_admin)
     return templates.TemplateResponse(
-        "dashboard.html", {"request": request, "username": username}
+        "dashboard.html", {"request": request, "username": username, "es_admin": es_admin}
     )
 
 

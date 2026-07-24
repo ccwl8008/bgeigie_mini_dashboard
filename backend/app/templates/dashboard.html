@@ -9,6 +9,9 @@
         </div>
         <div class="topbar__right">
             <span class="topbar__user">{{ username }}</span>
+            {% if es_admin %}
+            <a href="{{ base_path }}/admin" class="btn-ghost">Administración</a>
+            {% endif %}
             <a href="{{ base_path }}/logout" class="btn-ghost">Salir</a>
         </div>
     </header>

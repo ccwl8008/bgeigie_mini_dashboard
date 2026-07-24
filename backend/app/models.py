@@ -36,4 +36,5 @@ class Usuario(Base):
     password_hash = Column(String(255), nullable=False)
     nombre_completo = Column(String(100))
     activo = Column(Integer, default=1)
+    es_admin = Column(Integer, default=0)
     creado_en = Column(TIMESTAMP, server_default=func.now())
